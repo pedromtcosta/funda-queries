@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundaQueries", "FundaQueries\FundaQueries.csproj", "{619D6823-7C15-4DF1-BA81-D339F10C079F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{619D6823-7C15-4DF1-BA81-D339F10C079F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{619D6823-7C15-4DF1-BA81-D339F10C079F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{619D6823-7C15-4DF1-BA81-D339F10C079F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{619D6823-7C15-4DF1-BA81-D339F10C079F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8556EA5F-ACE2-4CEC-9ED4-04784043A8B2}
+	EndGlobalSection
+EndGlobal
