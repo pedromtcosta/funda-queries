@@ -6,6 +6,6 @@ namespace FundaQueries.Services
 {
     public interface IFeedsService
     {
-        Task<ICollection<Feed>> GetAllFeeds();
+        Task<ICollection<Feed>> GetAllFeeds(bool onlyPropertiesWithTuin = false);
     }
 }

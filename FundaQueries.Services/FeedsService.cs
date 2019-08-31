@@ -50,7 +50,7 @@ namespace FundaQueries.Services
             _restClient = restClient;
         }
 
-        public async Task<ICollection<Feed>> GetAllFeeds()
+        public async Task<ICollection<Feed>> GetAllFeeds(bool onlyPropertiesWithTuin = false)
         {
             QueryResponse queryResponse;
             var feeds = new List<Feed>();
@@ -58,7 +58,10 @@ namespace FundaQueries.Services
 
             do
             {
-                var response = await _restClient.GetAsync<QueryResponse>(RequestUriBuilder.Default.AtPage(currentPage).Build());
+                var uriBuilder = RequestUriBuilder.Default.AtPage(currentPage);
+                if (onlyPropertiesWithTuin) uriBuilder.WithTuin();
+
+                var response = await _restClient.GetAsync<QueryResponse>(uriBuilder.Build());
                 queryResponse = response.Value;
 
                 var feedsToAdd = queryResponse.Objects.Select(o => new Feed

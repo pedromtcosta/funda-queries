@@ -32,7 +32,7 @@ namespace FundaQueries.Spec
                 .Build();
 
             var feedsService = new Mock<IFeedsService>();
-            feedsService.Setup(f => f.GetAllFeeds()).Returns(Task.FromResult((ICollection<Feed>)feeds));
+            feedsService.Setup(f => f.GetAllFeeds(false)).Returns(Task.FromResult((ICollection<Feed>)feeds));
 
             var controller = new MakelaarsController(feedsService.Object);
 
