@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using FundaQueries.Dto;
 using FundaQueries.Services;
@@ -23,6 +24,8 @@ namespace FundaQueries.Controllers
         public async Task<IActionResult> Top10(bool withTuin = false)
         {
             var result = await _feedService.GetAllFeeds(withTuin);
+
+            if (result.IsFailure) return StatusCode((int)HttpStatusCode.InternalServerError, result.Error);
 
             var feeds = result.Value;
             var makelaars = feeds.GroupBy(f => f.MakelaarName)

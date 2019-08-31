@@ -53,5 +53,17 @@ namespace FundaQueries.Spec
             makelaars[8].Should().BeEquivalentTo(new MakelaarDto { Name = "Makelaar3", PropertiesForSale = 14 });
             makelaars[9].Should().BeEquivalentTo(new MakelaarDto { Name = "Makelaar9", PropertiesForSale = 3 });
         }
+
+        [Fact]
+        public async Task Should_return_500_error_if_api_request_fails()
+        {
+            var feedsService = new Mock<IFeedsService>();
+            feedsService.Setup(f => f.GetAllFeeds(false)).Returns(Task.FromResult(Result.Fail<ICollection<Feed>>("Error")));
+
+            var controller = new MakelaarsController(feedsService.Object);
+            var result = await controller.Top10();
+
+            result.ShouldHaveStatusCode(System.Net.HttpStatusCode.InternalServerError);
+        }
     }
 }
