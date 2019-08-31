@@ -20,9 +20,9 @@ namespace FundaQueries.Controllers
             _feedService = feedService;
         }
 
-        public async Task<IActionResult> Top10()
+        public async Task<IActionResult> Top10(bool withTuin = false)
         {
-            var feeds = await _feedService.GetAllFeeds();
+            var feeds = await _feedService.GetAllFeeds(withTuin);
 
             var makelaars = feeds.GroupBy(f => f.MakelaarName)
                 .Select(g => new MakelaarDto { Name = g.Key, PropertiesForSale = g.Count() })

@@ -36,7 +36,7 @@ namespace FundaQueries.Services
             public string Build()
             {
                 var url = BaseRequestUrl.Replace("{page}", _page.ToString());
-                url = _withTuin ? url.Replace("{tuin}", "tuin/") : url.Replace("{tuin}", "tuin");
+                url = _withTuin ? url.Replace("{tuin}", "tuin/") : url.Replace("{tuin}", "");
                 return url;
             }
 
