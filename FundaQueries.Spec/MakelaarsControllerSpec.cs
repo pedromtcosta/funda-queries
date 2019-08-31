@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FundaQueries.Controllers;
 using FundaQueries.Dto;
@@ -32,7 +33,7 @@ namespace FundaQueries.Spec
                 .Build();
 
             var feedsService = new Mock<IFeedsService>();
-            feedsService.Setup(f => f.GetAllFeeds(false)).Returns(Task.FromResult((ICollection<Feed>)feeds));
+            feedsService.Setup(f => f.GetAllFeeds(false)).Returns(Task.FromResult(Result.Ok<ICollection<Feed>>(feeds)));
 
             var controller = new MakelaarsController(feedsService.Object);
 

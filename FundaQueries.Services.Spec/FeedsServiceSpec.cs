@@ -32,7 +32,8 @@ namespace FundaQueries.Services.Spec
 
             var service = new FeedsService(restClient.Object);
 
-            var feeds = await service.GetAllFeeds();
+            var result = await service.GetAllFeeds();
+            var feeds = result.Value;
             feeds.Should().HaveCount(10);
         }
 
@@ -66,7 +67,8 @@ namespace FundaQueries.Services.Spec
 
             var service = new FeedsService(restClient.Object);
 
-            var feeds = await service.GetAllFeeds();
+            var result = await service.GetAllFeeds();
+            var feeds = result.Value;
             feeds.Should().HaveCount(totalItems);
         }
 
@@ -90,10 +92,35 @@ namespace FundaQueries.Services.Spec
 
             var service = new FeedsService(restClient.Object);
 
-            var feeds = await service.GetAllFeeds(true);
+            var result = await service.GetAllFeeds(true);
+            var feeds = result.Value;
             feeds.Should().HaveCount(10);
 
             restClient.Verify(c => c.GetAsync<QueryResponse>(@"http://partnerapi.funda.nl/feeds/Aanbod.svc/json/ac1b0b1572524640a0ecc54de453ea9f/?type=koop&zo=/amsterdam/tuin/&page=1&pagesize=25"));
+        }
+
+        [Fact]
+        public async Task Should_return_fail_if_http_request_fails()
+        {
+            var objects = Builder<ListedObject>.CreateListOfSize(10).Build().ToArray();
+            var queryResponse = new QueryResponse
+            {
+                Objects = objects,
+                Paging = new Paging
+                {
+                    AantalPaginas = 1,
+                    HuidigePagina = 1
+                }
+            };
+
+            var restClient = new Mock<IRestClient>();
+            restClient.Setup(c => c.GetAsync<QueryResponse>(RequestUriBuilder.Default.Build()))
+                .Returns(Task.FromResult(RestResponse<QueryResponse>.InternalServerError()));
+
+            var service = new FeedsService(restClient.Object);
+
+            var result = await service.GetAllFeeds();
+            result.IsFailure.Should().BeTrue();
         }
     }
 }

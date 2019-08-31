@@ -7,6 +7,7 @@ namespace FundaQueries.Services
     {
         public T Value { get; }
         public HttpStatusCode StatusCode { get; }
+        public bool IsSuccessStatusCode => ((int)StatusCode >= 200) && ((int)StatusCode <= 299);
 
         public RestResponse(T value, HttpStatusCode statusCode)
         {
@@ -17,6 +18,11 @@ namespace FundaQueries.Services
         public static RestResponse<T> Ok(T value)
         {
             return new RestResponse<T>(value, HttpStatusCode.OK);
+        }
+
+        public static RestResponse<T> InternalServerError()
+        {
+            return new RestResponse<T>(default(T), HttpStatusCode.InternalServerError);
         }
     }
 }
