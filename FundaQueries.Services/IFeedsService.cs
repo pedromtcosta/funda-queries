@@ -1,10 +1,11 @@
 ﻿using FundaQueries.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FundaQueries.Services
 {
     public interface IFeedsService
     {
-        ICollection<Feed> GetAllFeeds();
+        Task<ICollection<Feed>> GetAllFeeds();
     }
 }

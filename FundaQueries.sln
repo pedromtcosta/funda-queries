@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundaQueries.Services", "Fu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundaQueries.Models", "FundaQueries.Models\FundaQueries.Models.csproj", "{C39EE4E8-AFFD-41E5-9016-30D346A5BF67}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{41B81D81-4701-452C-883E-3C0933120D95}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9BAFF88B-50FB-41F8-820C-38897C6AF341}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundaQueries.Services.Spec", "FundaQueries.Services.Spec\FundaQueries.Services.Spec.csproj", "{DB9F3221-D7AF-4385-874D-E1686F105254}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +39,19 @@ Global
 		{C39EE4E8-AFFD-41E5-9016-30D346A5BF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C39EE4E8-AFFD-41E5-9016-30D346A5BF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C39EE4E8-AFFD-41E5-9016-30D346A5BF67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB9F3221-D7AF-4385-874D-E1686F105254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9F3221-D7AF-4385-874D-E1686F105254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9F3221-D7AF-4385-874D-E1686F105254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9F3221-D7AF-4385-874D-E1686F105254}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{619D6823-7C15-4DF1-BA81-D339F10C079F} = {41B81D81-4701-452C-883E-3C0933120D95}
+		{AC6803F9-4F25-451E-91C6-58AF8F6916D2} = {41B81D81-4701-452C-883E-3C0933120D95}
+		{74AC21AE-AFC0-46ED-A797-2638EF05F8A3} = {9BAFF88B-50FB-41F8-820C-38897C6AF341}
+		{DB9F3221-D7AF-4385-874D-E1686F105254} = {9BAFF88B-50FB-41F8-820C-38897C6AF341}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8556EA5F-ACE2-4CEC-9ED4-04784043A8B2}

@@ -14,7 +14,7 @@ namespace FundaQueries.Services
                 var json = await response.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<T>(json);
 
-                return new RestResponse<T>(value, response);
+                return new RestResponse<T>(value, response.StatusCode);
             }
         }
     }
