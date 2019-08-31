@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FundaQueries.Spec
@@ -14,7 +15,7 @@ namespace FundaQueries.Spec
     public class MakelaarsControllerSpec
     {
         [Fact]
-        public void Should_return_top_10_makelaars()
+        public async Task Should_return_top_10_makelaars()
         {
             var feeds = FeedsBuilder.Start
                 .Makelaar("Makelaar1").HasFeeds(88)
@@ -31,11 +32,11 @@ namespace FundaQueries.Spec
                 .Build();
 
             var feedsService = new Mock<IFeedsService>();
-            feedsService.Setup(f => f.GetAllFeeds()).Returns(feeds);
+            feedsService.Setup(f => f.GetAllFeeds()).Returns(Task.FromResult((ICollection<Feed>)feeds));
 
             var controller = new MakelaarsController(feedsService.Object);
 
-            var result = controller.Top10();
+            var result = await controller.Top10();
             var makelaars = result.GetValue<MakelaarDto[]>();
 
             result.ShouldHaveStatusCode(System.Net.HttpStatusCode.OK);
