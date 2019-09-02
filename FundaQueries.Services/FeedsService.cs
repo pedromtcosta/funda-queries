@@ -45,15 +45,17 @@ namespace FundaQueries.Services
         }
 
         private readonly IRestClient _restClient;
+        private readonly IThreadService _threadService;
 
-        public FeedsService(IRestClient restClient)
+        public FeedsService(IRestClient restClient, IThreadService threadService)
         {
             _restClient = restClient;
+            _threadService = threadService;
         }
 
         public async Task<Result<ICollection<Feed>>> GetAllFeeds(bool onlyPropertiesWithTuin = false)
         {
-            QueryResponse queryResponse;
+            QueryResponse queryResponse = null;
             var feeds = new List<Feed>();
             var currentPage = 1;
 
@@ -78,9 +80,15 @@ namespace FundaQueries.Services
                 }
                 else
                 {
+                    if (response.ReasonPhrase == "Request limit exceeded")
+                    {
+                        await _threadService.Sleep(60000);
+                        continue;
+                    }
+
                     return Result.Fail<ICollection<Feed>>("An error occurred while executing this request. Please try again in a few minutes.");
                 }
-            } while (currentPage <= queryResponse.Paging.AantalPaginas);
+            } while (queryResponse == null || currentPage <= queryResponse.Paging.AantalPaginas);
 
             return Result.Ok<ICollection<Feed>>(feeds);
         }

@@ -27,10 +27,12 @@ namespace FundaQueries.Services.Spec
             };
 
             var restClient = new Mock<IRestClient>();
+            var threadService = new Mock<IThreadService>();
+
             restClient.Setup(c => c.GetAsync<QueryResponse>(RequestUriBuilder.Default.Build()))
                 .Returns(Task.FromResult(RestResponse<QueryResponse>.Ok(queryResponse)));
 
-            var service = new FeedsService(restClient.Object);
+            var service = new FeedsService(restClient.Object, threadService.Object);
 
             var result = await service.GetAllFeeds();
             var feeds = result.Value;
@@ -46,6 +48,7 @@ namespace FundaQueries.Services.Spec
             var totalPages = (int)Math.Ceiling((decimal)totalItems / pageSize);
 
             var restClient = new Mock<IRestClient>();
+            var threadService = new Mock<IThreadService>();
 
             for (int i = 1; i <= totalPages; i++)
             {
@@ -65,7 +68,7 @@ namespace FundaQueries.Services.Spec
                     .Returns(Task.FromResult(RestResponse<QueryResponse>.Ok(queryResponse)));
             }
 
-            var service = new FeedsService(restClient.Object);
+            var service = new FeedsService(restClient.Object, threadService.Object);
 
             var result = await service.GetAllFeeds();
             var feeds = result.Value;
@@ -87,10 +90,12 @@ namespace FundaQueries.Services.Spec
             };
 
             var restClient = new Mock<IRestClient>();
+            var threadService = new Mock<IThreadService>();
+
             restClient.Setup(c => c.GetAsync<QueryResponse>(RequestUriBuilder.Default.WithTuin().Build()))
                 .Returns(Task.FromResult(RestResponse<QueryResponse>.Ok(queryResponse)));
 
-            var service = new FeedsService(restClient.Object);
+            var service = new FeedsService(restClient.Object, threadService.Object);
 
             var result = await service.GetAllFeeds(true);
             var feeds = result.Value;
@@ -114,13 +119,45 @@ namespace FundaQueries.Services.Spec
             };
 
             var restClient = new Mock<IRestClient>();
+            var threadService = new Mock<IThreadService>();
+
             restClient.Setup(c => c.GetAsync<QueryResponse>(RequestUriBuilder.Default.Build()))
                 .Returns(Task.FromResult(RestResponse<QueryResponse>.InternalServerError()));
 
-            var service = new FeedsService(restClient.Object);
+            var service = new FeedsService(restClient.Object, threadService.Object);
 
             var result = await service.GetAllFeeds();
             result.IsFailure.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task Should_wait_when_request_limit_exceeded()
+        {
+            var objects = Builder<ListedObject>.CreateListOfSize(10).Build().ToArray();
+            var queryResponse = new QueryResponse
+            {
+                Objects = objects,
+                Paging = new Paging
+                {
+                    AantalPaginas = 1,
+                    HuidigePagina = 1
+                }
+            };
+
+            var restClient = new Mock<IRestClient>();
+            var threadService = new Mock<IThreadService>();
+
+            restClient.SetupSequence(c => c.GetAsync<QueryResponse>(RequestUriBuilder.Default.Build()))
+                .Returns(Task.FromResult(RestResponse<QueryResponse>.Unauthorized("Request limit exceeded")))
+                .Returns(Task.FromResult(RestResponse<QueryResponse>.Ok(queryResponse)));
+
+            var service = new FeedsService(restClient.Object, threadService.Object);
+
+            var result = await service.GetAllFeeds();
+
+            threadService.Verify(t => t.Sleep(60000));
+            var feeds = result.Value;
+            feeds.Should().HaveCount(10);
         }
     }
 }

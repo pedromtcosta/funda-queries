@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace FundaQueries.Services
                 var json = await response.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<T>(json);
 
-                return new RestResponse<T>(value, response.StatusCode);
+                return new RestResponse<T>(value, response.StatusCode, response.ReasonPhrase);
             }
         }
     }
