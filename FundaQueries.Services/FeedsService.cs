@@ -78,7 +78,7 @@ namespace FundaQueries.Services
                 }
                 else
                 {
-                    return Result.Fail<ICollection<Feed>>("An error ocurred while executing this request. Please try again in a few minutes.");
+                    return Result.Fail<ICollection<Feed>>("An error occurred while executing this request. Please try again in a few minutes.");
                 }
             } while (currentPage <= queryResponse.Paging.AantalPaginas);
 
